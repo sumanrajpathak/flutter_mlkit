@@ -355,7 +355,9 @@ UIImage* imageFromImageSourceWithData(NSData *data) {
                         }];
     } else if ([call.method hasPrefix:@"getLanguage"]) {
     FIRNaturalLanguage *naturalLanguage = [FIRNaturalLanguage naturalLanguage];
-    FIRLanguageIdentification *languageId = [naturalLanguage languageIdentification];
+    FIRLanguageIdentificationOptions *options =
+    [[FIRLanguageIdentificationOptions alloc] initWithConfidenceThreshold:0.4];
+    FIRLanguageIdentification *languageId = [naturalLanguage languageIdentificationWithOptions:options];
 
     NSString *text = call.arguments[@"text"];
     [languageId identifyLanguageForText:text

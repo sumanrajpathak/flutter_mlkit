@@ -412,12 +412,15 @@ public class MlkitPlugin implements MethodCallHandler {
             }
         } else if (call.method.equals("getLanguage")) {
             FirebaseLanguageIdentification languageIdentifier = FirebaseNaturalLanguage.getInstance()
-                    .getLanguageIdentification();
+                    .getLanguageIdentification(new FirebaseLanguageIdentificationOptions.Builder()
+                        .setIdentifyAllLanguagesConfidenceThreshold(0.5f)
+                        .build());
             languageIdentifier.identifyLanguage((String) call.argument("text"))
                     .addOnSuccessListener(new OnSuccessListener<String>() {
                         @Override
                         public void onSuccess(@Nullable String languageCode) {
                             if (!Objects.equals(languageCode, "und")) {
+                                
                                 result.success(languageCode);
                             } else {
                                 result.error("0", "Language not found", "Unknown Language");
